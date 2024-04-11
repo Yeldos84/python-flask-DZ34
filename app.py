@@ -1,4 +1,11 @@
-from flask import Flask, request, render_template, url_for, render_template_string
+from flask import (
+    Flask,
+    request,
+    render_template,
+    url_for,
+    render_template_string,
+    make_response,
+)
 
 
 app = Flask(__name__)
@@ -42,6 +49,30 @@ def add_users(user):
     users.append(user)
 
     return render_template("users.html", users=users)
+
+
+@app.route("/set_cookies", methods=["GET"])
+def cookie():
+
+    return render_template("form.html")
+
+
+@app.route("/cookies", methods=["GET"])
+def set_cookie():
+    name_lang = request.args["lang"]
+    name_user = request.args["username"]
+    response = make_response(render_template("cookies.html"))
+    response.set_cookie("USERNAME", name_user)
+    response.set_cookie("LANG", name_lang)
+
+    return response
+
+
+@app.route("/get_cookies", methods=["GET"])
+def get_cookie():
+    html_lang = request.cookies.get("LANG")
+    html_user = request.cookies.get("USERNAME")
+    return "<h1> Lang:" + html_lang + "</h1>" "<h1> User:" + html_user + "</h1>"
 
 
 if __name__ == "__main__":

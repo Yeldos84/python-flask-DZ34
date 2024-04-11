@@ -11,6 +11,9 @@ nav{
 li{
     list-style: none;
 }
+.cookies{
+    color: red;
+}
 
 /* home.html */
 
